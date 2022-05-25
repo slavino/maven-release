@@ -73,7 +73,7 @@ public class RewritePomsForReleasePhase
             throws ReleaseExecutionException
     {
         // If SCM is null in original model, it is inherited, no mods needed
-        if ( project.getScm() != null )
+        if ( project.getOriginalModel().getScm() != null )
         {
             Scm scmRoot = modelTarget.getScm();
             if ( scmRoot != null )
