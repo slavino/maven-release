@@ -333,7 +333,7 @@ public class RewritePomsForReleasePhaseTest
         }
     }
 
-    //@Test TODO fix
+    @Test
     public void testRewriteBasicPomWithInheritedScm()
         throws Exception
     {
@@ -449,7 +449,7 @@ public class RewritePomsForReleasePhaseTest
         return builder;
     }
 
-    //@Test TODO fix
+    @Test
     public void testRewritePomWithExternallyReleasedParent()
         throws Exception
     {

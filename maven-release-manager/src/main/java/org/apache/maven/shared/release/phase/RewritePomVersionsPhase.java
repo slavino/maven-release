@@ -59,8 +59,9 @@ public class RewritePomVersionsPhase
     }
 
     @Override
-    protected void transformScm( MavenProject project, Model modelTarget, ReleaseDescriptor releaseDescriptor,
-                                 String projectId, ScmRepository scmRepository, ReleaseResult result )
+    protected void transformScm( MavenProject project, boolean first, Model modelTarget,
+                                 ReleaseDescriptor releaseDescriptor, String projectId, ScmRepository scmRepository,
+                                 ReleaseResult result )
     {
         // We are only updating versions no mods to scm needed
     }

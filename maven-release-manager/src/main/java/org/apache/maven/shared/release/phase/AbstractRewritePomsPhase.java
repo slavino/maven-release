@@ -199,17 +199,18 @@ public abstract class AbstractRewritePomsPhase
     {
         result.setStartTime( ( startTime >= 0 ) ? startTime : System.currentTimeMillis() );
 
+        boolean first = true;
         for ( MavenProject project : reactorProjects )
         {
             logInfo( result, "Transforming '" + project.getName() + "'..." );
 
-            transformProject( project, releaseDescriptor, releaseEnvironment, simulate, result );
+            transformProject( project, first, releaseDescriptor, releaseEnvironment, simulate, result );
+            first = false;
         }
     }
 
-    private void transformProject( MavenProject project, ReleaseDescriptor releaseDescriptor,
-                                   ReleaseEnvironment releaseEnvironment, boolean simulate,
-                                   ReleaseResult result )
+    private void transformProject( MavenProject project, boolean first, ReleaseDescriptor releaseDescriptor,
+                                   ReleaseEnvironment releaseEnvironment, boolean simulate, ReleaseResult result )
             throws ReleaseExecutionException, ReleaseFailureException
     {
         File pomFile = ReleaseUtil.getStandardPom( project );
@@ -244,7 +245,7 @@ public abstract class AbstractRewritePomsPhase
             }
         }
 
-        transformDocument( project, etl.getModel(), releaseDescriptor, scmRepository, result,
+        transformDocument( project, first, etl.getModel(), releaseDescriptor, scmRepository, result,
                 simulate );
 
         File outputFile;
@@ -261,9 +262,9 @@ public abstract class AbstractRewritePomsPhase
 
     }
 
-    private void transformDocument( MavenProject project, Model modelTarget, ReleaseDescriptor releaseDescriptor,
-                                    ScmRepository scmRepository, ReleaseResult result,
-                                    boolean simulate )
+    private void transformDocument( MavenProject project, boolean first, Model modelTarget,
+                                    ReleaseDescriptor releaseDescriptor, ScmRepository scmRepository,
+                                    ReleaseResult result, boolean simulate )
             throws ReleaseExecutionException, ReleaseFailureException
     {
         Model model = project.getModel();
@@ -356,7 +357,7 @@ public abstract class AbstractRewritePomsPhase
             }
         }
 
-        transformScm( project, modelTarget, releaseDescriptor, projectId, scmRepository, result );
+        transformScm( project, first, modelTarget, releaseDescriptor, projectId, scmRepository, result );
 
         if ( properties != null )
         {
@@ -646,6 +647,7 @@ public abstract class AbstractRewritePomsPhase
      * <p>transformScm.</p>
      *
      * @param project           a {@link org.apache.maven.project.MavenProject} object
+     * @param first             is first project in reactor
      * @param modelTarget       a {@link org.apache.maven.model.Model} object
      * @param releaseDescriptor a {@link org.apache.maven.shared.release.config.ReleaseDescriptor} object
      * @param projectId         a {@link java.lang.String} object
@@ -653,9 +655,9 @@ public abstract class AbstractRewritePomsPhase
      * @param result            a {@link org.apache.maven.shared.release.ReleaseResult} object
      * @throws org.apache.maven.shared.release.ReleaseExecutionException if any.
      */
-    protected abstract void transformScm( MavenProject project, Model modelTarget, ReleaseDescriptor releaseDescriptor,
-                                          String projectId, ScmRepository scmRepository,
-                                          ReleaseResult result )
+    protected abstract void transformScm( MavenProject project, boolean first, Model modelTarget,
+                                          ReleaseDescriptor releaseDescriptor, String projectId,
+                                          ScmRepository scmRepository, ReleaseResult result )
             throws ReleaseExecutionException;
 
     /**
